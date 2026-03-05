@@ -1,27 +1,29 @@
-const path = require('path');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
+import path from 'path';
+import HtmlWebpackPlugin from 'html-webpack-plugin';
+import { CleanWebpackPlugin } from 'clean-webpack-plugin';
 
-module.exports = {
+export default {
   entry: './src/index.js',
   output: {
-    filename: 'main.[contenthash].js',
-    path: path.resolve(__dirname, 'dist'),
-    clean: true, // Cleans the dist folder before every build
+    filename: '[name].bundle.js',
+    path: path.resolve(import.meta.dirname, 'dist'),
+    clean: true,
   },
   plugins: [
+    new CleanWebpackPlugin(),
     new HtmlWebpackPlugin({
-      template: './src/template.html',
+      template: './src/template.html', 
     }),
   ],
   module: {
     rules: [
       {
-        test: /\.css$/i,
-        use: ['style-loader', 'css-loader'], 
+        test: /\.(png|svg|jpg|jpeg|gif)$/i,
+        type: 'asset/resource',
       },
       {
-        test: /\.(png|svg|jpg|jpeg|gif)$/i,
-        type: "asset/resource",
+        test: /\.css$/i,
+        use: ['style-loader', 'css-loader'],
       },
     ],
   },
